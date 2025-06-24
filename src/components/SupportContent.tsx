@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Download, CheckCircle, AlertCircle, Loader2, ChevronRight, ChevronDown, Bug, Send, User, Mail, Phone, MapPin, FileText, X, Monitor, Triangle, Circle, Sun, Moon } from 'lucide-react';
+import { Download, CheckCircle, AlertCircle, Loader2, ChevronRight, ChevronDown, Bug, Send, User, Mail, Phone, MapPin, FileText, X, Monitor, Triangle, Circle } from 'lucide-react';
+
+import HeaderComponent from './HeaderComponent';
 
 interface DiagnosticFormData {
   name: string;
@@ -15,7 +17,6 @@ const SupportContent: React.FC = () => {
   const [diagnosticStatus, setDiagnosticStatus] = useState<'idle' | 'sending' | 'sent' | 'error' | null>(null);
   const [expandedTopic, setExpandedTopic] = useState<string | null>(null);
   const [showDiagnosticForm, setShowDiagnosticForm] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [diagnosticForm, setDiagnosticForm] = useState<DiagnosticFormData>({
     name: '',
     email: '',
@@ -24,31 +25,6 @@ const SupportContent: React.FC = () => {
     description: '',
     supportTopics: []
   });
-
-  // Initialize dark mode from localStorage or system preference
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-      setIsDarkMode(true);
-      document.documentElement.classList.add('dark');
-    }
-  }, []);
-
-  // Toggle dark mode
-  const toggleDarkMode = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  };
 
   const supportTopics = [
     {
@@ -207,36 +183,7 @@ const SupportContent: React.FC = () => {
   return (
     <div className="min-h-screen p-4 bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
-        {/* Header with Dark Mode Toggle */}
-        <div className="mb-8 text-center relative">
-          {/* Dark Mode Toggle */}
-          <div className="absolute top-0 right-0">
-            <button
-              onClick={toggleDarkMode}
-              className="p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300 group"
-              aria-label="Toggle dark mode"
-            >
-              <div className="relative w-6 h-6">
-                <Sun 
-                  size={24} 
-                  className={`absolute inset-0 text-yellow-500 transition-all duration-300 ${
-                    isDarkMode ? 'opacity-0 rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'
-                  }`} 
-                />
-                <Moon 
-                  size={24} 
-                  className={`absolute inset-0 text-blue-400 transition-all duration-300 ${
-                    isDarkMode ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-0'
-                  }`} 
-                />
-              </div>
-            </button>
-          </div>
-
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Support Center</h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 transition-colors duration-300">Troubleshooting guide for drive application issues</p>
-        </div>
-
+        <HeaderComponent />
         {/* Main Content */}
         <div className="flex gap-8">
           {/* Sidebar */}
