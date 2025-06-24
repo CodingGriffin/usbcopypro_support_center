@@ -1,22 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 import { Download, CheckCircle, Loader2 } from 'lucide-react';
+
+import actions from "../states/UsbCopyUpdates/actions";
 
 const UpdateCheckerComponent: React.FC = () => {
 	const [updateStatus, setUpdateStatus] = useState<'checking' | 'available' | 'up-to-date' | null>(null);
+  const dispatch = useDispatch();
+
+  const {
+    updatable,
+  } = useSelector((state: any) => state.usbcopyUpdates);
+
+	useEffect(() => {
+		console.log(updatable)
+    updatable.data != undefined ? setUpdateStatus(updatable.data ? 'available' : 'up-to-date') : '';
+	}, [updatable]);
 
   const checkForUpdates = async () => {
     setUpdateStatus('checking');
+		const url = new URL(window.location.href);
     
+    // Set or update the query parameter
+    const jobNum = url.searchParams.get('j');
+    const verNum = url.searchParams.get('v');
+    const vid = url.searchParams.get('vid');
+    const pid = url.searchParams.get('pid');
+    const os = url.searchParams.get('os');
+    const updatedAt = url.searchParams.get('updatedAt');
+
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
+		console.log(jobNum, verNum, vid, pid, os, updatedAt);
+		dispatch({
+      type: actions.CHECK_UPDATES,
+      payload: {
+				mode: "getUpdatingInfo",
+				ver_num: verNum,
+				job_number: jobNum,
+				os_type: os,
+				updatedAt: updatedAt
+      }
+    });
     // Randomly show updates available or up-to-date
-    const hasUpdates = Math.random() > 0.5;
-    setUpdateStatus(hasUpdates ? 'available' : 'up-to-date');
   };
 
   const openUpdateWindow = () => {
-    window.open('/updates', '_blank');
+    window.open(updatable.data.file_url, '_blank');
   };
 	
 	return (

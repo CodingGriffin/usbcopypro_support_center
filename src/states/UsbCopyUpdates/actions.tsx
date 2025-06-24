@@ -1,0 +1,7 @@
+export const actions = {
+  CHECK_UPDATES: "CHECK_UPDATES",
+  CHECK_UPDATES_SUCCESS: "CHECK_UPDATES_SUCCESS",
+  CHECK_UPDATES_FAILURE: "CHECK_UPDATES_FAILURE",
+};
+
+export default actions;
