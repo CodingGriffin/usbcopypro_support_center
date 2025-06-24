@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { CheckCircle, AlertCircle, Loader2, ChevronRight, ChevronDown, Bug, Send, User, Mail, Phone, MapPin, FileText, X, Monitor, Triangle, Circle } from 'lucide-react';
 
 import HeaderComponent from './HeaderComponent';
-import UpdateChckerComponent from './UpdateChckerComponent';
+import UpdateChckerComponent from './UpdateCheckerComponent';
 
 interface DiagnosticFormData {
   name: string;

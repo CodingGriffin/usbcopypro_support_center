@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Download, CheckCircle, Loader2 } from 'lucide-react';
 
-const UpdateChckerComponent: React.FC = () => {
+const UpdateCheckerComponent: React.FC = () => {
 	const [updateStatus, setUpdateStatus] = useState<'checking' | 'available' | 'up-to-date' | null>(null);
 
   const checkForUpdates = async () => {
@@ -68,4 +68,4 @@ const UpdateChckerComponent: React.FC = () => {
 	)
 }
 
-export default UpdateChckerComponent;
+export default UpdateCheckerComponent;
