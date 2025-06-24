@@ -19,9 +19,9 @@ const SupportContent: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <HeaderComponent />
         {/* Main Content */}
-        <div className="flex gap-8">
+        <div className="grid grid-cols-3 gap-8">
           {/* Sidebar */}
-          <div className="w-80 space-y-6">
+          <div className="lg:col-span-1 col-span-3 w-100 space-y-6 ">
             {/* Update Checker */}
             <UpdateChckerComponent />
 
@@ -30,7 +30,7 @@ const SupportContent: React.FC = () => {
           </div>
 
           {/* Main Content - Support Topics */}
-          <div className="flex-1">
+          <div className="lg:col-span-2 col-span-3">
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-200 dark:border-gray-700 transition-colors duration-300">
               <div className="mb-8">
                 <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3 transition-colors duration-300">Support Topics</h2>
