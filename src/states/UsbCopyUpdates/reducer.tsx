@@ -28,6 +28,23 @@ function Reducer(state = initialState, action: any) {
         loading: false,
         error: action.payload
       };
+    case actions.ADD_DIAGNOSTIC:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case actions.ADD_DIAGNOSTIC_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+    case actions.ADD_DIAGNOSTIC_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
     default:
       return state;
   }
