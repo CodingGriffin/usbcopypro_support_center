@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 import { CheckCircle, AlertCircle, Loader2, Bug, Send, User, Mail, Phone, MapPin, FileText, X } from 'lucide-react';
 
+import actions from "../states/UsbCopyUpdates/actions";
 import { supportTopics } from '../types';
 
 interface DiagnosticFormData {
@@ -13,6 +15,13 @@ interface DiagnosticFormData {
 }
 
 const DiagnosticComponent: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const {
+    loading,
+    error
+  } = useSelector((state: any) => state.usbcopyUpdates);
+  
 	const [diagnosticStatus, setDiagnosticStatus] = useState<'idle' | 'sending' | 'sent' | 'error' | null>(null);
 	const [showDiagnosticForm, setShowDiagnosticForm] = useState(false);
 	const [diagnosticForm, setDiagnosticForm] = useState<DiagnosticFormData>({
@@ -51,14 +60,32 @@ const DiagnosticComponent: React.FC = () => {
       };
 
       // Simulate API call to diagnostic endpoint
-      await new Promise(resolve => setTimeout(resolve, 2500));
-      
+    	const url = new URL(window.location.href);
+      const jobNum = url.searchParams.get('j');
+      const verNum = url.searchParams.get('v');
+      const vid = url.searchParams.get('vid');
+      const pid = url.searchParams.get('pid');
+      const os = url.searchParams.get('os');
+    
       console.log('Diagnostic data that would be sent:', diagnosticData);
-      
+      dispatch({
+        type: actions.ADD_DIAGNOSTIC,
+        payload: {
+          mode: "insertDiagnostic",
+          ver_num: verNum,
+          job_num: jobNum,
+          os_type: os,
+          name: diagnosticData.name,
+          email: diagnosticData.email,
+          phone_num: diagnosticData.telephone,
+          drive_source: diagnosticData.driveSource,
+          issue_description: diagnosticData.description,
+          issue_option: diagnosticData.supportTopics.join(', ')
+        }
+      });
       // Simulate random success/failure
-      const success = Math.random() > 0.1; // 90% success rate
       
-      if (success) {
+      if (!loading) {
         setDiagnosticStatus('sent');
         setShowDiagnosticForm(false);
         // Reset form

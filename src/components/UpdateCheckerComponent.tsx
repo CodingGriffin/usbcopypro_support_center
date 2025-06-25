@@ -5,7 +5,7 @@ import { Download, CheckCircle, Loader2 } from 'lucide-react';
 import actions from "../states/UsbCopyUpdates/actions";
 
 const UpdateCheckerComponent: React.FC = () => {
-	const [updateStatus, setUpdateStatus] = useState<'checking' | 'available' | 'up-to-date' | null>(null);
+  const [updateStatus, setUpdateStatus] = useState<'checking' | 'available' | 'up-to-date' | null>(null);
   const dispatch = useDispatch();
 
   const {
@@ -19,7 +19,7 @@ const UpdateCheckerComponent: React.FC = () => {
 
   const checkForUpdates = async () => {
     setUpdateStatus('checking');
-		const url = new URL(window.location.href);
+	const url = new URL(window.location.href);
     
     // Set or update the query parameter
     const jobNum = url.searchParams.get('j');
@@ -30,15 +30,15 @@ const UpdateCheckerComponent: React.FC = () => {
     const updatedAt = url.searchParams.get('updatedAt');
 
     // Simulate API call
-		console.log(jobNum, verNum, vid, pid, os, updatedAt);
-		dispatch({
+	console.log(jobNum, verNum, vid, pid, os, updatedAt);
+	dispatch({
       type: actions.CHECK_UPDATES,
       payload: {
-				mode: "getUpdatingInfo",
-				ver_num: verNum,
-				job_number: jobNum,
-				os_type: os,
-				updatedAt: updatedAt
+		mode: "getUpdatingInfo",
+		ver_num: verNum,
+		job_number: jobNum,
+		os_type: os,
+		updatedAt: updatedAt
       }
     });
     // Randomly show updates available or up-to-date

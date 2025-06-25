@@ -38,6 +38,7 @@ function Reducer(state = initialState, action: any) {
       return {
         ...state,
         loading: false,
+        error: null,
       };
     case actions.ADD_DIAGNOSTIC_FAILURE:
       return {
