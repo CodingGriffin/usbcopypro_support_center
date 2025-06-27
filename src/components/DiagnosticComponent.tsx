@@ -65,6 +65,7 @@ const DiagnosticComponent: React.FC = () => {
       const verNum = url.searchParams.get('v');
       const vid = url.searchParams.get('vid');
       const pid = url.searchParams.get('pid');
+      const serialNumber = url.searchParams.get('support_code');
       const os = url.searchParams.get('os');
     
       console.log('Diagnostic data that would be sent:', diagnosticData);
@@ -78,7 +79,11 @@ const DiagnosticComponent: React.FC = () => {
           name: diagnosticData.name,
           email: diagnosticData.email,
           phone_num: diagnosticData.telephone,
+          browser_info: diagnosticData.userAgent,
           drive_source: diagnosticData.driveSource,
+          vid: vid,
+          pid: pid,
+          serial_number: serialNumber,
           issue_description: diagnosticData.description,
           issue_option: diagnosticData.supportTopics.join(', ')
         }
