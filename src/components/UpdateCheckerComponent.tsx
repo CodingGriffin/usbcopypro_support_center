@@ -251,7 +251,7 @@ const UpdateCheckerComponent: React.FC = () => {
 									className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
 								/>
 								<label htmlFor="diagnostics" className="text-sm text-gray-700 dark:text-gray-300">
-									Find My Update
+									Find Link with Email
 								</label>
 							</div>
 							{/* Email Input */}
@@ -288,7 +288,7 @@ const UpdateCheckerComponent: React.FC = () => {
 													Checking...
 												</>
 											) : (
-												'Check for Updates'
+												'Check for Link'
 											)}
 										</button>
 									</div>
