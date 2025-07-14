@@ -31,12 +31,7 @@ const SupportContent: React.FC = () => {
 
           {/* Main Content - Support Topics */}
           <div className="lg:col-span-2 col-span-3">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-200 dark:border-gray-700 transition-colors duration-300">
-              <div className="mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3 transition-colors duration-300">Support Topics</h2>
-                <p className="text-gray-600 dark:text-gray-300 text-lg transition-colors duration-300">Find solutions to common drive application issues</p>
-              </div>
-              
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-200 dark:border-gray-700 transition-colors duration-300">              
               <div className="space-y-4">
                 {supportTopics.map((topic) => {
                   const Icon = topic.icon;

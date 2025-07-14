@@ -259,13 +259,14 @@ const UpdateCheckerComponent: React.FC = () => {
 								<>
 									<div>
 										<label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-											Email Address
+											Email Address *
 										</label>
 										<div className="relative">
 											<Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
 											<input
 												type="email"
 												id="email"
+												required
 												value={email}
 												onChange={(e) => setEmail(e.target.value)}
 												disabled={!includeDiagnostics}

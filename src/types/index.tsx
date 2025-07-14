@@ -52,20 +52,20 @@ export const supportTopics = [
       }
     ]
   },
-  {
-    id: 'none-of-these-help',
-    title: 'If none of these steps help',
-    shortTitle: 'None of these steps help',
-    icon: Circle,
-    description: 'Additional support options when other solutions don\'t work',
-    sections: [
-      {
-        title: 'Additional Support Steps',
-        content: [
-          'If no updates are available, please send a diagnostic report to the manufacturer.',
-          'Then, contact the company where you got the drive and let them know about your experience.'
-        ]
-      }
-    ]
-  }
+  // {
+  //   id: 'none-of-these-help',
+  //   title: 'If none of these steps help',
+  //   shortTitle: 'None of these steps help',
+  //   icon: Circle,
+  //   description: 'Additional support options when other solutions don\'t work',
+  //   sections: [
+  //     {
+  //       title: 'Additional Support Steps',
+  //       content: [
+  //         'If no updates are available, please send a diagnostic report to the manufacturer.',
+  //         'Then, contact the company where you got the drive and let them know about your experience.'
+  //       ]
+  //     }
+  //   ]
+  // }
 ];

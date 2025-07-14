@@ -226,11 +226,12 @@ const DiagnosticComponent: React.FC = () => {
                 <div>
                   <label htmlFor="email" className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-300">
                     <Mail size={16} className="mr-2 text-gray-500 dark:text-gray-400 transition-colors duration-300" />
-                    Email Address
+                    Email Address *
                   </label>
                   <input
                     type="email"
                     id="email"
+                    required
                     value={diagnosticForm.email}
                     onChange={(e) => setDiagnosticForm(prev => ({ ...prev, email: e.target.value }))}
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-300"
@@ -260,21 +261,14 @@ const DiagnosticComponent: React.FC = () => {
                     <MapPin size={16} className="mr-2 text-gray-500 dark:text-gray-400 transition-colors duration-300" />
                     Where did you obtain the drive? *
                   </label>
-                  <select
+                  <input
+                    type=""
                     id="driveSource"
-                    required
                     value={diagnosticForm.driveSource}
                     onChange={(e) => setDiagnosticForm(prev => ({ ...prev, driveSource: e.target.value }))}
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-300"
-                  >
-                    <option value="">Select source...</option>
-                    <option value="official-website">Official Website</option>
-                    <option value="retail-store">Retail Store</option>
-                    <option value="online-marketplace">Online Marketplace</option>
-                    <option value="colleague-friend">Colleague/Friend</option>
-                    <option value="company-distribution">Company Distribution</option>
-                    <option value="other">Other</option>
-                  </select>
+                    placeholder="Enter the source"
+                  />
                 </div>
 
                 {/* Description Field */}
