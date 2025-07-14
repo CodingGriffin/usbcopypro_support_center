@@ -28,6 +28,24 @@ function Reducer(state = initialState, action: any) {
         loading: false,
         error: action.payload
       };
+    case actions.CHECK_GLOBAL_UPDATES:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case actions.CHECK_GLOBAL_UPDATES_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        updatable: action.payload,
+      };
+    case actions.CHECK_GLOBAL_UPDATES_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
     case actions.ADD_DIAGNOSTIC:
       return {
         ...state,

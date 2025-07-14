@@ -19,6 +19,15 @@ function* getUpdates(action: any) {
   }
 }
 
+function* getGlobalUpdates(action: any) {
+  try {
+    const response: any = yield* callApi(postRequestNoToken, "j/inc/class/class.usbCopyPro.php", {...action.payload});
+    yield put({ type: actions.CHECK_GLOBAL_UPDATES_SUCCESS, payload: response });
+  } catch (error) {
+    yield put({ type: actions.CHECK_GLOBAL_UPDATES_FAILURE, payload: error });
+  }
+}
+
 function* addDiagnostic(action: any) {
   try {
     const response: any = yield* callApi(postRequestNoToken, "j/inc/class/class.usbCopyPro.php", {...action.payload});
@@ -39,6 +48,7 @@ function* sendEmail(action: any) {
 
 export default function* rootSaga() {
   yield all([takeLatest(actions.CHECK_UPDATES, getUpdates)]);
+  yield all([takeLatest(actions.CHECK_GLOBAL_UPDATES, getGlobalUpdates)]);
   yield all([takeLatest(actions.ADD_DIAGNOSTIC, addDiagnostic)]);
   yield all([takeLatest(actions.SEND_EMAIL, sendEmail)]);
 }
