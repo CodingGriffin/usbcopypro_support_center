@@ -46,6 +46,24 @@ function Reducer(state = initialState, action: any) {
         loading: false,
         error: action.payload
       };
+    case actions.SEND_EMAIL:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case actions.SEND_EMAIL_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+      };
+    case actions.SEND_EMAIL_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
     default:
       return state;
   }

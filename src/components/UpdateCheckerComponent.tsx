@@ -11,7 +11,6 @@ const UpdateCheckerComponent: React.FC = () => {
   const [email, setEmail] = useState('');
   const [modalUpdateStatus, setModalUpdateStatus] = useState<'idle' | 'checking' | 'completed' | null>('idle');
   const dispatch = useDispatch();
-
   const {
     updatable,
   } = useSelector((state: any) => state.usbcopyUpdates);
@@ -73,6 +72,19 @@ const UpdateCheckerComponent: React.FC = () => {
       payload: payload
     });
   };
+
+  const sendEmail = (object_key: any) => {
+	const payload = {
+      	mode: "sendEmail",
+		object_key: object_key,
+		email: email.trim()
+	};
+
+	dispatch({
+      type: actions.SEND_EMAIL,
+      payload: payload
+    });
+  }
 
   const openUpdateWindow = () => {
     if (Array.isArray(updatable.data) && updatable.data.length > 0) {
@@ -144,21 +156,6 @@ const UpdateCheckerComponent: React.FC = () => {
 						</div>
 
 						<div className="space-y-4">
-							{/* Check for Updates Button */}
-							<button
-								onClick={checkForUpdatesInModal}
-								disabled={modalUpdateStatus === 'checking'}
-								className="w-full bg-blue-500 dark:bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-							>
-								{modalUpdateStatus === 'checking' ? (
-									<>
-										<Loader2 className="animate-spin mr-2" size={16} />
-										Checking...
-									</>
-								) : (
-									'Check for Updates'
-								)}
-							</button>
 							{/* Diagnostics Checkbox */}
 							<div className="flex items-start space-x-3">
 								<input
@@ -196,6 +193,21 @@ const UpdateCheckerComponent: React.FC = () => {
 									</div>
 								</div>
 							}
+							{/* Check for Updates Button */}
+							<button
+								onClick={checkForUpdatesInModal}
+								disabled={modalUpdateStatus === 'checking'}
+								className="w-full bg-blue-500 dark:bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+							>
+								{modalUpdateStatus === 'checking' ? (
+									<>
+										<Loader2 className="animate-spin mr-2" size={16} />
+										Checking...
+									</>
+								) : (
+									'Check for Updates'
+								)}
+							</button>
 							{/* Update Results */}
 							{modalUpdateStatus === 'completed' && (
 								<div className="mt-4 p-4 border rounded-lg bg-gray-50 dark:bg-gray-700">
@@ -217,27 +229,34 @@ const UpdateCheckerComponent: React.FC = () => {
 																	<p className="font-medium text-gray-900 dark:text-white">
 																		{update.file_name || update.name || `Update ${index + 1}`}
 																	</p>
-																	<p className="text-sm text-gray-500 dark:text-gray-400">
-																		Version: {update.version || update.ver_num || 'Latest'}
-																	</p>
 																	{update.description && (
 																		<p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
 																			{update.description}
 																		</p>
 																	)}
-																	{update.size && (
+																	{update.formatted_timestamp && (
 																		<p className="text-xs text-gray-400 dark:text-gray-500">
-																			Size: {update.size}
+																			Date: {update.formatted_timestamp}
 																		</p>
 																	)}
 																</div>
-																<button
-																	onClick={() => window.open(update.file_url || update.download_url, '_blank')}
-																	className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm flex items-center ml-3"
-																>
-																	<Download size={14} className="mr-1" />
-																	Download
-																</button>
+																{includeDiagnostics ?
+																	<button
+																		onClick={() => sendEmail(update.object_key)}
+																		className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm flex items-center ml-3"
+																	>
+																		<Mail size={14} className="mr-1" />
+																		Send Email
+																	</button>
+																:
+																	<button
+																		onClick={() => window.open(update.file_url || update.download_url, '_blank')}
+																		className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm flex items-center ml-3"
+																	>
+																		<Download size={14} className="mr-1" />
+																		Download
+																	</button>
+																}
 															</div>
 														</div>
 													))}
