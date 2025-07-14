@@ -3,6 +3,7 @@ import actions from "./actions";
 const initialState = {
   updates: [],
   updatable: {},
+  global_updatable: {},
   loading: false,
   error: null,
 };
@@ -31,19 +32,19 @@ function Reducer(state = initialState, action: any) {
     case actions.CHECK_GLOBAL_UPDATES:
       return {
         ...state,
-        loading: true,
+        global_loading: true,
         error: null,
       };
     case actions.CHECK_GLOBAL_UPDATES_SUCCESS:
       return {
         ...state,
-        loading: false,
-        updatable: action.payload,
+        global_loading: false,
+        global_updatable: action.payload,
       };
     case actions.CHECK_GLOBAL_UPDATES_FAILURE:
       return {
         ...state,
-        loading: false,
+        global_loading: false,
         error: action.payload
       };
     case actions.ADD_DIAGNOSTIC:
