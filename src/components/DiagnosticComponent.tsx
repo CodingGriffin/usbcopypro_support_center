@@ -11,6 +11,8 @@ interface DiagnosticFormData {
 	telephone: string;
 	driveSource: string;
 	description: string;
+  redScreen: string;
+  supportCode: string;
 	supportTopics: string[];
 }
 
@@ -24,12 +26,17 @@ const DiagnosticComponent: React.FC = () => {
   
 	const [diagnosticStatus, setDiagnosticStatus] = useState<'idle' | 'sending' | 'sent' | 'error' | null>(null);
 	const [showDiagnosticForm, setShowDiagnosticForm] = useState(false);
+  const [redScreenVisible, setRedScreenVisible] = useState(false);
+  const [supportCodeOption, setSupportCodeOption] = useState('');
+  const [supportCode, setSupportCode] = useState('');
 	const [diagnosticForm, setDiagnosticForm] = useState<DiagnosticFormData>({
     name: '',
     email: '',
     telephone: '',
     driveSource: '',
     description: '',
+    redScreen: '',
+    supportCode: '',
     supportTopics: []
   });
   const handleDiagnosticFormSubmit = async (e: React.FormEvent) => {
@@ -85,7 +92,9 @@ const DiagnosticComponent: React.FC = () => {
           pid: pid,
           serial_number: serialNumber,
           issue_description: diagnosticData.description,
-          issue_option: diagnosticData.supportTopics.join(', ')
+          issue_option: diagnosticData.supportTopics.join(', '),
+          red_screen: diagnosticData.redScreen,
+          support_code: diagnosticData.supportCode
         }
       });
       // Simulate random success/failure
@@ -100,6 +109,8 @@ const DiagnosticComponent: React.FC = () => {
           telephone: '',
           driveSource: '',
           description: '',
+          redScreen: '',
+          supportCode: '',
           supportTopics: []
         });
       } else {
@@ -118,6 +129,29 @@ const DiagnosticComponent: React.FC = () => {
         ? prev.supportTopics.filter(id => id !== topicId)
         : [...prev.supportTopics, topicId]
     }));
+  };
+
+  const handleRedScreenToggle = () => {
+    setRedScreenVisible(!redScreenVisible);
+    if (redScreenVisible) {
+      setSupportCodeOption('');
+      setSupportCode('');
+    }
+  };
+
+  const handleSupportCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length <= 32) {
+      setDiagnosticForm(prev => ({ ...prev, supportCode: value }))
+      setSupportCode(value);
+    }
+  };
+
+  const handleSupportCodeOptionChange = (option: string) => {
+    setSupportCodeOption(option);
+    if (option !== 'support-code-seen') {
+      setSupportCode('');
+    }
   };
 
 	return (
@@ -298,22 +332,96 @@ const DiagnosticComponent: React.FC = () => {
                     {supportTopics.map((topic) => {
                       const Icon = topic.icon;
                       return (
-                        <label key={topic.id} className="flex items-center cursor-pointer group">
-                          <input
-                            type="checkbox"
-                            checked={diagnosticForm.supportTopics.includes(topic.id)}
-                            onChange={() => handleSupportTopicToggle(topic.id)}
-                            className="w-4 h-4 text-purple-600 bg-white dark:bg-gray-600 border-gray-300 dark:border-gray-500 rounded focus:ring-purple-500 dark:focus:ring-purple-400 focus:ring-2 transition-colors duration-300"
-                          />
-                          <div className="ml-3 flex items-center">
-                            <div className="w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:bg-red-200 dark:group-hover:bg-red-900/50 transition-colors duration-200">
-                              <Icon size={16} className="text-red-600 dark:text-red-400 transition-colors duration-300" />
+                        <>
+                          {topic.title != 'If none of these steps help' &&
+                          <label key={topic.id} className="flex items-center cursor-pointer group">
+                            <input
+                              type="checkbox"
+                              checked={diagnosticForm.supportTopics.includes(topic.id)}
+                              onChange={() => handleSupportTopicToggle(topic.id)}
+                              className="w-4 h-4 text-purple-600 bg-white dark:bg-gray-600 border-gray-300 dark:border-gray-500 rounded focus:ring-purple-500 dark:focus:ring-purple-400 focus:ring-2 transition-colors duration-300"
+                            />
+                            <div className="ml-3 flex items-center">
+                              <div className="w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:bg-red-200 dark:group-hover:bg-red-900/50 transition-colors duration-200">
+                                <Icon size={16} className="text-red-600 dark:text-red-400 transition-colors duration-300" />
+                              </div>
+                              <span className="text-sm text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors duration-200">
+                                {topic.shortTitle}
+                              </span>
                             </div>
-                            <span className="text-sm text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors duration-200">
-                              {topic.shortTitle}
-                            </span>
-                          </div>
-                        </label>
+                          </label>}
+                          {(diagnosticForm.supportTopics.includes('app-opens-cannot-continue') && topic.id == 'app-opens-cannot-continue') &&
+                            <div className="ml-8 space-y-4">
+                              <div className="flex items-center space-x-3">
+                                <div 
+                                  className={`w-4 h-4 border-2 rounded cursor-pointer transition-all ${
+                                    redScreenVisible 
+                                      ? 'bg-blue-500 border-blue-500' 
+                                      : 'border-gray-500 hover:border-blue-400'
+                                  }`}
+                                  onClick={handleRedScreenToggle}
+                                >
+                                  {redScreenVisible && (
+                                    <svg className="w-2 h-2 text-white m-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                  )}
+                                </div>
+                                <span className="text-gray-400 text-sm">Do you see a red screen?</span>
+                              </div>
+
+                              {/* Support code radio options */}
+                              {redScreenVisible && (
+                                <div className="ml-6 space-y-3 p-4 bg-gray-700 rounded-lg border border-gray-600">
+                                  <h3 className="text-sm font-medium text-gray-200 mb-3">Any messages from the code:</h3>
+                                  
+                                  {[
+                                    { value: 'no-support-code', label: 'No Support Code' },
+                                    { value: 'support-code-empty', label: 'Support Code is Empty' },
+                                    { value: 'other-messages', label: 'Any Other Messages' },
+                                    { value: 'support-code-seen', label: 'I see a Support Code' }
+                                  ].map((option) => (
+                                    <div key={option.value} className="flex items-center space-x-3">
+                                      <div 
+                                        className={`w-4 h-4 border-2 rounded-full cursor-pointer transition-all ${
+                                          supportCodeOption === option.value 
+                                            ? 'bg-blue-500 border-blue-500' 
+                                            : 'border-gray-500 hover:border-blue-400'
+                                        }`}
+                                        onClick={() => {handleSupportCodeOptionChange(option.value); setDiagnosticForm(prev => ({ ...prev, redScreen: option.label }))} }
+                                      >
+                                        {supportCodeOption === option.value && (
+                                          <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
+                                        )}
+                                      </div>
+                                      <span className="text-sm text-gray-300">{option.label}</span>
+                                    </div>
+                                  ))}
+
+                                  {/* Support code input */}
+                                  {supportCodeOption === 'support-code-seen' && (
+                                    <div className="mt-4 space-y-2">
+                                      <label className="block text-sm font-medium text-gray-200">
+                                        Enter Support Code:
+                                      </label>
+                                      <input
+                                        type="text"
+                                        value={supportCode}
+                                        onChange={handleSupportCodeChange}
+                                        placeholder="Enter support code (max 32 characters)"
+                                        maxLength={32}
+                                        className="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                      />
+                                      <div className="text-xs text-gray-400 text-right">
+                                        {supportCode.length}/32 characters
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          }
+                        </>
                       );
                     })}
                   </div>

@@ -2,6 +2,31 @@ import { Monitor, Triangle, Circle } from 'lucide-react';
 
 export const supportTopics = [
   {
+    id: 'app-never-opens',
+    title: 'App never opens',
+    shortTitle: 'App never opens',
+    icon: Triangle,
+    description: 'When the app fails to start at all',
+    sections: [
+      {
+        title: 'If you see an error as soon as you try to open the app',
+        content: [
+          'Make sure the drive is fully connected and showing up on your computer.',
+          'If it still doesn\'t work, try it on another computer.',
+          'If the app continues to fail, please contact the company where you got the drive.'
+        ]
+      },
+      {
+        title: 'If your computer has antivirus/security software or you\'re using a work/corporate computer',
+        content: [
+          'Antivirus or security software may be blocking the app. You can check if the app was blocked and ask your IT person or department for help.',
+          'Work or corporate computers may not allow access to USB drives or update servers. Try using the drive on a different computer, such as a personal laptop.',
+          'The drive is write-protected to prevent these systems from changing or deleting its contents.'
+        ]
+      }
+    ]
+  },
+  {
     id: 'app-opens-cannot-continue',
     title: 'App opens initially, but cannot continue',
     shortTitle: 'App opens but cannot continue',
@@ -28,44 +53,19 @@ export const supportTopics = [
     ]
   },
   {
-    id: 'app-never-opens',
-    title: 'App never opens',
-    shortTitle: 'App never opens',
-    icon: Triangle,
-    description: 'When the app fails to start at all',
+    id: 'none-of-these-help',
+    title: 'If none of these steps help',
+    shortTitle: 'None of these steps help',
+    icon: Circle,
+    description: 'Additional support options when other solutions don\'t work',
     sections: [
       {
-        title: 'If you see an error as soon as you try to open the app',
+        title: 'Additional Support Steps',
         content: [
-          'Make sure the drive is fully connected and showing up on your computer.',
-          'If it still doesn\'t work, try it on another computer.',
-          'If the app continues to fail, please contact the company where you got the drive.'
-        ]
-      },
-      {
-        title: 'If your computer has antivirus/security software or you\'re using a work/corporate computer',
-        content: [
-          'Antivirus or security software may be blocking the app. You can check if the app was blocked and ask your IT person or department for help.',
-          'Work or corporate computers may not allow access to USB drives or update servers. Try using the drive on a different computer, such as a personal laptop.',
-          'The drive is write-protected to prevent these systems from changing or deleting its contents.'
+          'If no updates are available, please send a diagnostic report to the manufacturer.',
+          'Then, contact the company where you got the drive and let them know about your experience.'
         ]
       }
     ]
-  },
-  // {
-  //   id: 'none-of-these-help',
-  //   title: 'If none of these steps help',
-  //   shortTitle: 'None of these steps help',
-  //   icon: Circle,
-  //   description: 'Additional support options when other solutions don\'t work',
-  //   sections: [
-  //     {
-  //       title: 'Additional Support Steps',
-  //       content: [
-  //         'If no updates are available, please send a diagnostic report to the manufacturer.',
-  //         'Then, contact the company where you got the drive and let them know about your experience.'
-  //       ]
-  //     }
-  //   ]
-  // }
+  }
 ];
