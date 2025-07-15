@@ -377,8 +377,7 @@ const DiagnosticComponent: React.FC = () => {
                                   
                                   {[
                                     { value: 'no-support-code', label: 'No Support Code' },
-                                    { value: 'support-code-empty', label: 'Support Code is Empty' },
-                                    { value: 'other-messages', label: 'Any Other Messages' },
+                                    { value: 'no-drives-found', label: 'No Drives Found' },
                                     { value: 'support-code-seen', label: 'I see a Support Code' }
                                   ].map((option) => (
                                     <div key={option.value} className="flex items-center space-x-3">
