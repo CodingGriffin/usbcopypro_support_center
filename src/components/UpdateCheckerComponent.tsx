@@ -39,20 +39,39 @@ const UpdateCheckerComponent: React.FC = () => {
   const openUpdateModal = () => {
 	setUpdateStatus('checking')
 	const url = new URL(window.location.href);
+
+  // Set or update the query parameter
+  const jobNum = url.searchParams.get('j');
+  const verNum = url.searchParams.get('v');
+  const vid = url.searchParams.get('vid');
+  const pid = url.searchParams.get('pid');
+  const os = url.searchParams.get('os');
+  const updatedAt = url.searchParams.get('updatedAt');
+
   const query = url.searchParams.get('query')?.replace(/ /g, '+');
   const secretKey = "THISSECRETKEYQUERYSTRINGSUPPORT0"; // Generate a random 32-byte key
 
   const decryptedParams = decryptParams(query, secretKey);
   console.log('Decrypted Parameters:', decryptedParams);
-
+  let payload: any = null;
   // Prepare payload
-  let payload: any = {
-    mode: "getUpdatingInfo",
-    ver_num: decryptedParams.verNum,
-    job_number: decryptedParams.jobNum,
-    os_type: decryptedParams.os,
-    updatedAt: decryptedParams.updatedAt
-  };
+  if (updatedAt) {
+    payload = {
+      mode: "getUpdatingInfo",
+      ver_num: verNum,
+      job_number: jobNum,
+      os_type: os,
+      updatedAt: updatedAt
+    };
+  } else {
+    payload = {
+      mode: "getUpdatingInfo",
+      ver_num: decryptedParams.verNum,
+      job_number: decryptedParams.jobNum,
+      os_type: decryptedParams.os,
+      updatedAt: decryptedParams.updatedAt
+    };
+  }
 
 	dispatch({
       type: actions.CHECK_GLOBAL_UPDATES,
@@ -82,14 +101,30 @@ const UpdateCheckerComponent: React.FC = () => {
 		const os = url.searchParams.get('os');
 		const updatedAt = url.searchParams.get('updatedAt');
 
-		// Prepare payload
-		let payload: any = {
-		mode: "getUpdatingInfo",
-		ver_num: verNum,
-		job_number: jobNum,
-		os_type: os,
-		updatedAt: updatedAt
-		};
+    const query = url.searchParams.get('query')?.replace(/ /g, '+');
+    const secretKey = "THISSECRETKEYQUERYSTRINGSUPPORT0"; // Generate a random 32-byte key
+
+    const decryptedParams = decryptParams(query, secretKey);
+    console.log('Decrypted Parameters:', decryptedParams);
+    let payload: any = null;
+    // Prepare payload
+    if (updatedAt) {
+      payload = {
+        mode: "getUpdatingInfo",
+        ver_num: verNum,
+        job_number: jobNum,
+        os_type: os,
+        updatedAt: updatedAt
+      };
+    } else {
+      payload = {
+        mode: "getUpdatingInfo",
+        ver_num: decryptedParams.verNum,
+        job_number: decryptedParams.jobNum,
+        os_type: decryptedParams.os,
+        updatedAt: decryptedParams.updatedAt
+      };
+    }
 
 		// If diagnostics are included and email is provided, add them to payload
 		payload = {

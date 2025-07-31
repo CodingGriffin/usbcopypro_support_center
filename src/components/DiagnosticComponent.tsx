@@ -69,6 +69,12 @@ const DiagnosticComponent: React.FC = () => {
 
       // Simulate API call to diagnostic endpoint
     	const url = new URL(window.location.href);
+      const jobNum = url.searchParams.get('j');
+      const verNum = url.searchParams.get('v');
+      const vid = url.searchParams.get('vid');
+      const pid = url.searchParams.get('pid');
+      const serialNumber = url.searchParams.get('support_code');
+      const os = url.searchParams.get('os');
       const query = url.searchParams.get('query')?.replace(/ /g, '+');
       const secretKey = "THISSECRETKEYQUERYSTRINGSUPPORT0"; // Generate a random 32-byte key
 
@@ -76,27 +82,51 @@ const DiagnosticComponent: React.FC = () => {
       console.log('Decrypted Parameters:', decryptedParams);
     
       console.log('Diagnostic data that would be sent:', diagnosticData);
-      dispatch({
-        type: actions.ADD_DIAGNOSTIC,
-        payload: {
-          mode: "insertDiagnostic",
-          ver_num: decryptedParams.verNum,
-          job_num: decryptedParams.jobNum,
-          os_type: decryptedParams.os,
-          name: diagnosticData.name,
-          email: diagnosticData.email,
-          phone_num: diagnosticData.telephone,
-          browser_info: diagnosticData.userAgent,
-          drive_source: diagnosticData.driveSource,
-          vid: decryptedParams.vid,
-          pid: decryptedParams.pid,
-          serial_number: decryptedParams.support_code,
-          issue_description: diagnosticData.description,
-          issue_option: diagnosticData.supportTopics.join(', '),
-          red_screen: diagnosticData.redScreen,
-          support_code: diagnosticData.supportCode
-        }
-      });
+      if (os) {
+        dispatch({
+          type: actions.ADD_DIAGNOSTIC,
+          payload: {
+            mode: "insertDiagnostic",
+            ver_num: verNum,
+            job_num: jobNum,
+            os_type: os,
+            name: diagnosticData.name,
+            email: diagnosticData.email,
+            phone_num: diagnosticData.telephone,
+            browser_info: diagnosticData.userAgent,
+            drive_source: diagnosticData.driveSource,
+            vid: vid,
+            pid: pid,
+            serial_number: serialNumber,
+            issue_description: diagnosticData.description,
+            issue_option: diagnosticData.supportTopics.join(', '),
+            red_screen: diagnosticData.redScreen,
+            support_code: diagnosticData.supportCode
+          }
+        });
+      } else {
+        dispatch({
+          type: actions.ADD_DIAGNOSTIC,
+          payload: {
+            mode: "insertDiagnostic",
+            ver_num: decryptedParams.verNum,
+            job_num: decryptedParams.jobNum,
+            os_type: decryptedParams.os,
+            name: diagnosticData.name,
+            email: diagnosticData.email,
+            phone_num: diagnosticData.telephone,
+            browser_info: diagnosticData.userAgent,
+            drive_source: diagnosticData.driveSource,
+            vid: decryptedParams.vid,
+            pid: decryptedParams.pid,
+            serial_number: decryptedParams.support_code,
+            issue_description: diagnosticData.description,
+            issue_option: diagnosticData.supportTopics.join(', '),
+            red_screen: diagnosticData.redScreen,
+            support_code: diagnosticData.supportCode
+          }
+        });
+      }
       // Simulate random success/failure
       
       if (!loading) {
