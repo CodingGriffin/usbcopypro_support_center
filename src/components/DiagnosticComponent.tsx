@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { CheckCircle, AlertCircle, Loader2, Bug, Send, User, Mail, Phone, MapPin, FileText, X } from 'lucide-react';
+import CryptoJS from 'crypto-js';
 
 import actions from "../states/UsbCopyUpdates/actions";
 import { supportTopics } from '../types';
@@ -68,29 +69,28 @@ const DiagnosticComponent: React.FC = () => {
 
       // Simulate API call to diagnostic endpoint
     	const url = new URL(window.location.href);
-      const jobNum = url.searchParams.get('j');
-      const verNum = url.searchParams.get('v');
-      const vid = url.searchParams.get('vid');
-      const pid = url.searchParams.get('pid');
-      const serialNumber = url.searchParams.get('support_code');
-      const os = url.searchParams.get('os');
+      const query = url.searchParams.get('query')?.replace(/ /g, '+');
+      const secretKey = "THISSECRETKEYQUERYSTRINGSUPPORT0"; // Generate a random 32-byte key
+
+      const decryptedParams = decryptParams(query, secretKey);
+      console.log('Decrypted Parameters:', decryptedParams);
     
       console.log('Diagnostic data that would be sent:', diagnosticData);
       dispatch({
         type: actions.ADD_DIAGNOSTIC,
         payload: {
           mode: "insertDiagnostic",
-          ver_num: verNum,
-          job_num: jobNum,
-          os_type: os,
+          ver_num: decryptedParams.verNum,
+          job_num: decryptedParams.jobNum,
+          os_type: decryptedParams.os,
           name: diagnosticData.name,
           email: diagnosticData.email,
           phone_num: diagnosticData.telephone,
           browser_info: diagnosticData.userAgent,
           drive_source: diagnosticData.driveSource,
-          vid: vid,
-          pid: pid,
-          serial_number: serialNumber,
+          vid: decryptedParams.vid,
+          pid: decryptedParams.pid,
+          serial_number: decryptedParams.support_code,
           issue_description: diagnosticData.description,
           issue_option: diagnosticData.supportTopics.join(', '),
           red_screen: diagnosticData.redScreen,
@@ -121,6 +121,13 @@ const DiagnosticComponent: React.FC = () => {
       setDiagnosticStatus('error');
     }
   };
+
+  // Function to decrypt parameters
+  const decryptParams = (encryptedString: any, secretKey: any) => {
+    const decryptedData = CryptoJS.AES.decrypt(encryptedString, secretKey);
+    const decryptedParams = JSON.parse(decryptedData.toString(CryptoJS.enc.Utf8));
+    return decryptedParams;
+  }
 
   const handleSupportTopicToggle = (topicId: string) => {
     setDiagnosticForm(prev => ({

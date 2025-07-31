@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Download, CheckCircle, Loader2, X, Mail } from 'lucide-react';
+import CryptoJS from 'crypto-js';
 
 import actions from "../states/UsbCopyUpdates/actions";
 
@@ -38,25 +39,21 @@ const UpdateCheckerComponent: React.FC = () => {
   const openUpdateModal = () => {
 	setUpdateStatus('checking')
 	const url = new URL(window.location.href);
+  const query = url.searchParams.get('query')?.replace(/ /g, '+');
+  const secretKey = "THISSECRETKEYQUERYSTRINGSUPPORT0"; // Generate a random 32-byte key
 
-    // Set or update the query parameter
-    const jobNum = url.searchParams.get('j');
-    const verNum = url.searchParams.get('v');
-    const vid = url.searchParams.get('vid');
-    const pid = url.searchParams.get('pid');
-    const os = url.searchParams.get('os');
-    const updatedAt = url.searchParams.get('updatedAt');
+  const decryptedParams = decryptParams(query, secretKey);
+  console.log('Decrypted Parameters:', decryptedParams);
 
-    // Prepare payload
-    let payload: any = {
-      mode: "getUpdatingInfo",
-      ver_num: verNum,
-      job_number: jobNum,
-      os_type: os,
-      updatedAt: updatedAt
-    };
+  // Prepare payload
+  let payload: any = {
+    mode: "getUpdatingInfo",
+    ver_num: decryptedParams.verNum,
+    job_number: decryptedParams.jobNum,
+    os_type: decryptedParams.os,
+    updatedAt: decryptedParams.updatedAt
+  };
 
-    console.log(jobNum, verNum, vid, pid, os, updatedAt, payload);
 	dispatch({
       type: actions.CHECK_GLOBAL_UPDATES,
       payload: payload
@@ -64,6 +61,13 @@ const UpdateCheckerComponent: React.FC = () => {
     setFlag(true);
     setModalUpdateStatus('idle');
   };
+
+  // Function to decrypt parameters
+  const decryptParams = (encryptedString: any, secretKey: any) => {
+    const decryptedData = CryptoJS.AES.decrypt(encryptedString, secretKey);
+    const decryptedParams = JSON.parse(decryptedData.toString(CryptoJS.enc.Utf8));
+    return decryptedParams;
+  }
 
   const checkForUpdatesInModal = async () => {
     if (includeDiagnostics && email.trim()) {
