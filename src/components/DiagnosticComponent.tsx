@@ -78,9 +78,6 @@ const DiagnosticComponent: React.FC = () => {
       const query = url.searchParams.get('query')?.replace(/ /g, '+');
       const secretKey = "THISSECRETKEYQUERYSTRINGSUPPORT0"; // Generate a random 32-byte key
 
-      const decryptedParams = decryptParams(query, secretKey);
-      console.log('Decrypted Parameters:', decryptedParams);
-    
       console.log('Diagnostic data that would be sent:', diagnosticData);
       if (os) {
         dispatch({
@@ -105,6 +102,8 @@ const DiagnosticComponent: React.FC = () => {
           }
         });
       } else {
+      const decryptedParams = decryptParams(query, secretKey);
+      console.log('Decrypted Parameters:', decryptedParams);
         dispatch({
           type: actions.ADD_DIAGNOSTIC,
           payload: {

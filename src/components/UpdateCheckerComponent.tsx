@@ -51,8 +51,6 @@ const UpdateCheckerComponent: React.FC = () => {
   const query = url.searchParams.get('query')?.replace(/ /g, '+');
   const secretKey = "THISSECRETKEYQUERYSTRINGSUPPORT0"; // Generate a random 32-byte key
 
-  const decryptedParams = decryptParams(query, secretKey);
-  console.log('Decrypted Parameters:', decryptedParams);
   let payload: any = null;
   // Prepare payload
   if (updatedAt) {
@@ -64,6 +62,8 @@ const UpdateCheckerComponent: React.FC = () => {
       updatedAt: updatedAt
     };
   } else {
+  const decryptedParams = decryptParams(query, secretKey);
+  console.log('Decrypted Parameters:', decryptedParams);
     payload = {
       mode: "getUpdatingInfo",
       ver_num: decryptedParams.verNum,
@@ -104,8 +104,6 @@ const UpdateCheckerComponent: React.FC = () => {
     const query = url.searchParams.get('query')?.replace(/ /g, '+');
     const secretKey = "THISSECRETKEYQUERYSTRINGSUPPORT0"; // Generate a random 32-byte key
 
-    const decryptedParams = decryptParams(query, secretKey);
-    console.log('Decrypted Parameters:', decryptedParams);
     let payload: any = null;
     // Prepare payload
     if (updatedAt) {
@@ -117,6 +115,8 @@ const UpdateCheckerComponent: React.FC = () => {
         updatedAt: updatedAt
       };
     } else {
+	const decryptedParams = decryptParams(query, secretKey);
+    console.log('Decrypted Parameters:', decryptedParams);
       payload = {
         mode: "getUpdatingInfo",
         ver_num: decryptedParams.verNum,
